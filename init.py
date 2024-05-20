@@ -1,4 +1,4 @@
-import mysql.connector
+mport mysql.connector
 
 # Database connection details
 db_config = {

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Рупоиск</title>
+    <link href="style.css" rel="stylesheet">
+    <!--Film parametrs upadate for searching-->
+    <script>
+        function sendUpdate(type, value) {
+            fetch('/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ type: type, ...value })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function handleTextInputChange() {
+            const inputField = document.getElementById('textInput');
+            const text = inputField.value;
+            sendUpdate('text', { text: text });
+        }
+
+        function handleCheckboxChange() {
+            const checkbox = document.getElementById('checkboxInput');
+            const checked = checkbox.checked;
+            sendUpdate('checkbox', { checked: checked });
+        }
+
+        function handleSelectChange() {
+            const selectField = document.getElementById('year_min');
+            const value = selectField.value;
+            sendUpdate('select_min', { value: value });
+        }
+
+        function handleSelect2Change() {
+            const selectField = document.getElementById('year_max');
+            const value = selectField.value;
+            sendUpdate('select_max', { value: value });
+        }
+    </script>
+</head>
+<body>
+<header>
+    <h1>Rupoisk</h1>
+</header>
+
+<h2>Find films</h2>
+Name: <input type="text" id="textInput" placeholder="Start writing name" size="38" oninput="handleTextInputChange()" />
+
+<br> Have you watched it? <input type="checkbox" id="checkboxInput" onchange="handleCheckboxChange()"/>
+
+<br>
+Years from
+<select id="year_min" onchange="handleSelectChange()"></select>
+
+<script>
+    var yearSelect = document.getElementById('year_min');
+    var currentYear = new Date().getFullYear();
+    var startYear = 1900;
+
+    for (let year = startYear; year <= currentYear; year++) {
+        var option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    }
+</script>
+to
+<select id="year_max" onchange="handleSelect2Change()"></select>
+
+<script>
+    var yearSelect = document.getElementById('year_max');
+    var currentYear = new Date().getFullYear();
+    var startYear = 1900;
+
+    for (let year = startYear; year <= currentYear; year++) {
+        var option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    }
+</script>
+<!--<table id="myCrossTable" class="tb">
+    <tr>
+        <td><p><a href="food.html"><img src="food.jpg" width=30% alt="food"></a></p></td>
+        <td><p><a href="drinks.html"><img src="drinks.jpg" width=30% alt="drinks"></a></p></td>
+    </tr>
+    <tr>
+        <td><p><a href="clothes.html"><img src="clothes.jpg" width=30% alt="clothes"></a></p></td>
+    </tr>
+</table>
+<script src="script.js"></script>-->
+<footer>
+</footer>
+</body>
+</html>

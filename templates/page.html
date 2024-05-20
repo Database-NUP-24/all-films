@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>MovieBase</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <!--Film parametrs upadate for searching-->
+    <script>
+        function sendUpdate(type, value) {
+            fetch('/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ type: type, ...value })
+            })
+            .then(response => response.json())
+            .then(data => {
+                displayResults(data.results);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function handleTextInputChange() {
+            const inputField = document.getElementById('textInput');
+            const text = inputField.value;
+            sendUpdate('text', { text: text });
+        }
+
+        function handleCheckboxChange() {
+            const checkbox = document.getElementById('checkboxInput');
+            const checked = checkbox.checked;
+            sendUpdate('checkbox', { checked: checked });
+        }
+
+        function handleSelectChange() {
+            const selectField = document.getElementById('year_min');
+            const value = selectField.value;
+            sendUpdate('select_min', { value: value });
+        }
+
+        function handleSelect2Change() {
+            const selectField = document.getElementById('year_max');
+            const value = selectField.value;
+            sendUpdate('select_max', { value: value });
+        }
+
+        function handleGenreChange() {
+            const selectField = document.getElementById('genre');
+            const value = selectField.value;
+            sendUpdate('genre', { value: value });
+        }
+
+        function handleCountryChange() {
+            const selectField = document.getElementById('country');
+            const value = selectField.value;
+            sendUpdate('country', { value: value });
+        }
+
+        function displayResults(results) {
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = '';  // Очистить предыдущие результаты
+
+            results.forEach(result => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = result["title"];
+                li.appendChild(a);
+                const span = document.createElement('span');
+                span.textContent = result["grade"];
+                li.appendChild(span);
+                //li.textContent = result["title"];
+                li.addEventListener('click', () => selectResult(result));
+                resultsList.appendChild(li);
+            });
+        }
+
+        function selectResult(result) {
+            document.getElementById('selectedResult').textContent = `Film: ${result["title"]}`;
+            document.getElementById('selected_film_year').textContent = `Year is ${result["year"]}`;
+            document.getElementById('selected_film_country').textContent = `Country is ${result["country"]}`;
+            document.getElementById('selected_film_genre').textContent = `Genre is ${result["genre"]}`;
+            document.getElementById('selected_film_grade').textContent = `Grade is ${result["grade"]}`;
+            document.getElementById('selected_film_discription').textContent = `${result["description"]}`;
+            document.getElementById('ratingSelectContainer').style.display = 'block';
+        }
+
+        function submitRating() {
+            const selectedResult = document.getElementById('selectedResult').textContent.split(': ')[1];
+            const rating = document.getElementById('ratingSelect').value;
+            document.getElementById('selected_film_grade').textContent = `Grade is ${rating}`;
+            sendUpdate('grade', {'grade': rating, 'film': selectedResult});
+        }
+    </script>
+</head>
+<body>
+<header>
+    <h1>MovieBase</h1>
+</header>
+
+<div class="cnotainer">
+<div class="block-left">
+<h2>Find films</h2>
+Name: <input type="text" id="textInput" placeholder="Start writing name" size="38" oninput="handleTextInputChange()" />
+
+<br> Have you watched it? <input type="checkbox" id="checkboxInput" onchange="handleCheckboxChange()"/>
+
+<br>
+Years from
+<select id="year_min" onchange="handleSelectChange()"></select>
+
+<script>
+    var yearSelect = document.getElementById('year_min');
+    var currentYear = new Date().getFullYear();
+    var startYear = 1900;
+
+    for (let year = startYear; year <= currentYear; year++) {
+        var option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    }
+</script>
+to
+<select id="year_max" onchange="handleSelect2Change()"></select>
+
+<script>
+    var yearSelect = document.getElementById('year_max');
+    var currentYear = new Date().getFullYear();
+    var startYear = 1900;
+
+    for (let year = currentYear; year >= startYear; year--) {
+        var option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+    }
+</script>
+
+<br>
+Genre: <select id="genre" onchange="handleGenreChange()">
+    <option value="any">Any</option>
+    <option value="Science Fiction">Science Fiction</option>
+    <option value="Fantasy">Fantasy</option>
+    <option value="Crime">Crime</option>
+    <option value="Thriller">Thriller</option>
+    <option value="Drama">Drama</option>
+    <option value="Action">Action</option>
+</select>
+  Country:<select id="country" onchange="handleCountryChange()">
+    <option value="any">Any</option>
+    <option value="USA">USA</option>
+    <option value="Japan">Japan</option>
+    <option value="South Korea">South Korea</option>
+    <option value="Mexico">Mexico</option>
+    <option value="Brazil">Brazil</option>
+</select>
+
+<br>
+<ul id="resultsList" class="result-list"></ul>
+</div>
+<div class="block-right">
+
+
+<div id="resultDetails" style="margin-top: 20px;">
+    <p id="selectedResult"></p>
+    <p id="selected_film_year"></p>
+    <p id="selected_film_genre"></p>
+    <p id="selected_film_country"></p>
+    <p id="selected_film_grade"></p>
+    <p id="selected_film_discription"></p>
+    <div id="ratingSelectContainer" style="display: none;">
+        <label for="ratingSelect">Give a rating:</label>
+        <select id="ratingSelect">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+        <button onclick="submitRating()">Submit</button>
+    </div>
+</div>
+</div>
+</div>
+<footer>
+</footer>
+</body>
+</html>

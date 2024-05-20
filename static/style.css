@@ -1,0 +1,100 @@
+body {
+    margin: 0;
+    background-color: white;
+}
+
+header a {
+    position: relative;
+    display: inline-block;
+    font-size: 2em;
+    color: black;
+    font-weight: 800;
+    text-decoration: none;
+    overflow: hidden;
+    background-color: green;
+    border-radius: 3px;
+}
+
+h1 {
+    color: white;
+}
+
+header {
+    background-color: black;
+    height: 50px;
+}
+
+p {
+    text-align: center;
+    font-weight: 800;
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    background-color: #218838;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 30px;
+}
+
+.result-list * {transition: .4s linear;}
+.result-list {
+  background: lightgray;
+  list-style-type: circle;
+  list-style-position: inside;
+  padding: 0 10px;
+  margin: 0;
+}
+.result-list li {
+  font-family: "Trebuchet MS", "Lucida Sans";
+  border-bottom: 1px solid #efefef;
+  padding: 10px 0;
+}
+.result-list a {
+  text-decoration: none;
+  color: #555;
+}
+.result-list li span {
+  float: right;
+  display: inline-block;
+  border: 1px solid #efefef;
+  padding: 0 5px;
+  font-size: 13px;
+  color: #999;
+}
+.result-list li:hover {
+    background-color: white;
+    border-bottom: 1px solid white;
+}
+.result-list li:hover a {color: #c93961}
+.result-list li:hover span {
+  color: #c93961;
+  border: 1px solid #c93961;
+}
+
+.block-left {
+    width: 50%;
+    height: 800px;
+    background-color: lightgray;
+    overflow: auto;
+    float: left;
+}
+
+.block-right {
+    width: 50%;
+    height: 800px;
+    overflow: auto;
+    text-align: center;
+}
