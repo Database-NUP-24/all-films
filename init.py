@@ -1,4 +1,4 @@
-mport mysql.connector
+import mysql.connector
 
 # Database connection details
 db_config = {
@@ -42,10 +42,20 @@ CREATE TABLE IF NOT EXISTS films (
 )
 """
 
-# Indexing: Implement B-tree or B+-tree indexing on at least one of the tables for efficient querying.
-
-
 cursor.execute(create_table_query)
+
+create_table_query_user = """
+    CREATE TABLE IF NOT EXISTS User (
+        Name VARCHAR(255),
+        Grade INT,
+        INDEX (Name) USING BTREE,
+        INDEX (Grade) USING BTREE
+    );
+    """
+
+
+cursor.execute(create_table_query_user)
+
 
 # Insert data into the films table
 insert_query = """

@@ -82,7 +82,7 @@
             document.getElementById('selected_film_year').textContent = `Year is ${result["year"]}`;
             document.getElementById('selected_film_country').textContent = `Country is ${result["country"]}`;
             document.getElementById('selected_film_genre').textContent = `Genre is ${result["genre"]}`;
-            document.getElementById('selected_film_grade').textContent = `Grade is ${result["grade"]}`;
+            document.getElementById('selected_film_grade').textContent = `Grade is ${result["grade"] != null ? result["grade"] : "-"}`;
             document.getElementById('selected_film_discription').textContent = `${result["description"]}`;
             document.getElementById('ratingSelectContainer').style.display = 'block';
         }
