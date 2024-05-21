@@ -19,10 +19,19 @@ def open_connection():
 
 def add_to_table1(name, grade):
     connection, cursor = open_connection()
-    cursor.execute(f"INSERT INTO `{table1}` (Name, Grade) VALUES (%s, %s)", (name, grade))
+    connection.start_transaction()
+
+    cursor.execute(f"SELECT COUNT(*) FROM {table1} WHERE Name = %s", (name,))
+    count = cursor.fetchone()[0]
+
+    if count == 0:
+        cursor.execute(f"INSERT INTO {table1} (Name, Grade) VALUES (%s, %s)", (name, grade))
+    else:
+        cursor.execute(f"UPDATE {table1} SET Grade = %s WHERE Name = %s", (grade, name))
     connection.commit()
     cursor.close()
     connection.close()
+
 
 
 def search(name, genre, year_min, year_max, iswatched, country):
